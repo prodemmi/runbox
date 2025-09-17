@@ -367,6 +367,27 @@ func (app *App) executeJavaScript(code string, c *gin.Context) (interface{}, err
 		},
 	})
 
+	vm.Set("fetch", func(call otto.FunctionCall) otto.Value {
+		url := call.Argument(0).String()
+
+		resp, err := http.Get(url)
+		if err != nil {
+			val, _ := otto.ToValue(map[string]interface{}{
+				"error": err.Error(),
+			})
+			return val
+		}
+		defer resp.Body.Close()
+
+		body, _ := io.ReadAll(resp.Body)
+
+		val, _ := otto.ToValue(map[string]interface{}{
+			"status": resp.StatusCode,
+			"body":   string(body),
+		})
+		return val
+	})
+
 	_, err := vm.Run(code)
 	if err != nil {
 		return nil, fmt.Errorf("JavaScript execution error: %v", err)
