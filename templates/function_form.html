@@ -95,7 +95,6 @@
                 id="code"
                 name="code"
                 rows="15"
-                required
               >
 {{.function.Code}}</textarea
               >
@@ -117,7 +116,6 @@
 
       <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize CodeMirror for the code textarea
             var codeEditor = CodeMirror.fromTextArea(document.getElementById('code'), {
                 lineNumbers: true,
                 mode: 'javascript',
@@ -127,37 +125,40 @@
                 lineWrapping: true
             });
 
-            // Handle form submission for PUT requests
             document.getElementById('functionForm').addEventListener('submit', function(e) {
-                // Update the textarea with CodeMirror content
-                codeEditor.save();
+            codeEditor.save();
+            if (!codeEditor.getValue().trim()) {
+              e.preventDefault();
+              alert("Code is required!");
+              return;
+            }
 
-                {{if eq .method "PUT"}}
-                e.preventDefault();
+            {{if eq .method "PUT"}}
+            e.preventDefault();
 
-                const formData = new FormData(this);
+            const formData = new FormData(this);
 
-                fetch(this.action, {
-                    method: 'PUT',
-                    body: new URLSearchParams(formData)
-                })
-                .then(response => {
-                    if (response.redirected) {
-                        window.location.href = response.url;
-                    } else {
-                        return response.text();
-                    }
-                })
-                .then(html => {
-                    if (html) {
-                        document.body.innerHTML = html;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-                {{end}}
+            fetch(this.action, {
+                method: 'PUT',
+                body: new URLSearchParams(formData)
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    return response.text();
+                }
+            })
+            .then(html => {
+                if (html) {
+                    document.body.innerHTML = html;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
+            {{end}}
+        });
         });
       </script>
     </div>
