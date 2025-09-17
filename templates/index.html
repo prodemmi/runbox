@@ -10,10 +10,6 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/">RunBox</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/functions/create">New Function</a>
-            </div>
         </div>
     </nav>
 
@@ -21,30 +17,30 @@
 <div class="row">
     <div class="col-12">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>RunBox - Function Executor</h1>
+            <div></div>
             <a href="/functions/create" class="btn btn-primary">Create New Function</a>
         </div>
         
         {{if .functions}}
-        <div class="row">
-            {{range .functions}}
-            <div class="col-md-6 col-lg-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{.Name}}</h5>
-                        <p class="card-text">
-                            <small class="text-muted">Path: {{.Path}}</small><br>
-                            {{if .Description}}{{.Description}}{{else}}No description{{end}}
-                        </p>
-                        <div class="btn-group" role="group">
-                            <a href="/functions/{{.ID}}/edit" class="btn btn-sm btn-outline-primary">Edit</a>
-                            <button class="btn btn-sm btn-outline-success" onclick="testFunction('{{.Path}}')">Test</button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteFunction({{.ID}})">Delete</button>
-                        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+        {{range .functions}}
+        <div class="col d-flex">
+            <div class="card flex-fill">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{.Name}}</h5>
+                    <p class="card-text">
+                    <small class="text-muted">Path: {{.Path}}</small><br>
+                    {{if .Description}}{{.Description}}{{else}}No description{{end}}
+                    </p>
+                    <div class="mt-auto btn-group" role="group" style="max-width: 50%;">
+                        <a href="/functions/{{.ID}}/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <button class="btn btn-sm btn-outline-success" onclick="testFunction('{{.Path}}')">Test</button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteFunction({{.ID}})">Delete</button>
                     </div>
                 </div>
             </div>
-            {{end}}
+        </div>
+        {{end}}
         </div>
         {{else}}
         <div class="text-center py-5">
