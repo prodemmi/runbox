@@ -1,3 +1,5 @@
+![RunBox](./assets/demo.png)
+
 # RunBox
 
 RunBox is a simple **FaaS (Functions as a Service)** platform written in Go.  
